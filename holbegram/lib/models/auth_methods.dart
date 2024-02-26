@@ -69,4 +69,6 @@ class AuthMethods {
       return e.toString();
     }
   }
+
+  loginUser({required String email, required String password}) {}
 }

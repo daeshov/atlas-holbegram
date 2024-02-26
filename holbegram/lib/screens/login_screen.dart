@@ -1,24 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:holbegram/models/auth_methods.dart';
 import '../widgets/text_field.dart';
-
+import './signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-
-  const LoginScreen({
-    super.key,
-    required this.emailController,
-    required this.passwordController,
-  });
+  const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool _passwordVisible = true;
+  // ignore: unused_field
+  bool _isLoading = false;
+
+  @override
+    void dispose() {
+      super.dispose();
+      emailController.dispose();
+      passwordController.dispose();
+    }
+
+    void loginUser() async {
+      setState(() {
+        _isLoading = true;
+      });
+      String res = await AuthMethods().loginUser(
+          email: emailController.text, password: passwordController.text);
+      if (res == "success") {
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+
+
+  void navigateToSignUp() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SignupScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Image.asset(
-              'assets/images/logo.png',
+              '../assets/images/logo.webp',
               width: 80,
               height: 60,
             ),
@@ -47,14 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 28),
                   TextFieldInput(
-                    controller: widget.emailController,
+                    controller: emailController,
                     isPassword: false,
                     hintText: 'Email',
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 24),
                   TextFieldInput(
-                    controller: widget.passwordController,
+                    controller: passwordController,
                     isPassword: !_passwordVisible,
                     hintText: 'Password',
                     keyboardType: TextInputType.visiblePassword,
@@ -81,8 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color.fromARGB(218, 226, 37, 24)),
                       ),
-                      onPressed: () {
-                        // Handle login button press
+                      onPressed: (){
+
                       },
                       child: const Text(
                         'Log in',
@@ -114,9 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Text("Don't have an account"),
                         TextButton(
-                          onPressed: () {
-                            // Handle sign-up button press
-                          },
+                          onPressed: navigateToSignUp,
                           child: const Text(
                             'Sign up',
                             style: TextStyle(
@@ -142,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.network(
-                        'https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png',
+                        '../assets/images/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png',
                         width: 40,
                         height: 40,
                       ),
