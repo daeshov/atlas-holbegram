@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:holbegram/screens/auth/upload_image_screen.dart';
 import '../widgets/text_field.dart';
-import 'package:image_picker/image_picker.dart';
 import 'login_screen.dart';
 
 
@@ -227,11 +227,12 @@ class _LoginScreenState extends State<SignupScreen> {
       ),
     );
   }
+    
+  void showSnackBar(BuildContext context, String message) {ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
   
-  pickImage(ImageSource gallery) {}
-  
-  void showSnackBar(BuildContext context, String s) {}
-  
-  // ignore: non_constant_identifier_names
-  AddPicture({required String email, required String password, required String username}) {}
 }

@@ -25,10 +25,11 @@ class Users {
     required this.searchKey,
   });
 
-  static Users fromSnap(DocumentSnapshot snap) {
-    Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+ static Future<Users> fromSnapshot(DocumentSnapshot<Object?> userDoc) {
+  Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
 
-    return Users(
+  return Future.value(
+    Users(
       uid: data['uid'] ?? '',
       email: data['email'] ?? '',
       username: data['username'] ?? '',
@@ -39,8 +40,9 @@ class Users {
       posts: List.from(data['posts'] ?? []),
       saved: List.from(data['saved'] ?? []),
       searchKey: data['searchKey'] ?? '',
-    );
-  }
+    ),
+  );
+}
 
   Map<String, dynamic> toJson() {
     return {

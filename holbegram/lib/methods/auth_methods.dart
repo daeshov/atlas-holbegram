@@ -1,17 +1,11 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:holbegram/models/user.dart';
-// ignore: prefer_typing_uninitialized_variables
+import '../models/user.dart';
 
 class AuthMethods {
-  late FirebaseAuth _auth;
-  late FirebaseFirestore _firestore;
-
-  AuthMethods() {
-    _auth = FirebaseAuth.instance;
-    _firestore = FirebaseFirestore.instance;
-  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> login({required String email, required String password}) async {
     if (email.isEmpty || password.isEmpty) {
@@ -20,8 +14,6 @@ class AuthMethods {
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // Navigate to the home screen on success
-      // Your navigation code here
       return "success";
     } catch (e) {
       // Handle login failure
@@ -67,6 +59,20 @@ class AuthMethods {
     } catch (e) {
       // Handle signup failure
       return e.toString();
+    }
+  }
+
+  Future<Users> getUserDetails() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc = await _firestore.collection("users").doc(user.uid).get();
+        return Users.fromSnapshot(userDoc);
+      }
+      throw Exception("User not found");
+    } catch (e) {
+      // Handle error
+      rethrow;
     }
   }
 
