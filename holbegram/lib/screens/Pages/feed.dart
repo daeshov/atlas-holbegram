@@ -20,7 +20,7 @@ appBar: AppBar(
               
             ),
             Image.asset(
-              'assets/images/img.png',
+              '../assets/images/logo.webp',
               width: 50,
               height: 50,
             ),
